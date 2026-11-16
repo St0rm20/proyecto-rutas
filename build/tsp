@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec java -Xss64m -Xmx6g -XX:+UseSerialGC -cp "/home/storm/Documents/uni/algoritmos/proyecto-rutas/build/classes" Tsp "$@"
