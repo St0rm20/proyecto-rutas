@@ -1,0 +1,5 @@
+representacion,supuesto,mib
+Matriz de adyacencia,"8808x8808 celdas, float32 (4 B) por celda (un solo peso)",295.947509765625
+Matriz de adyacencia,"8808x8808 celdas, float64 (8 B) por celda (un solo peso)",591.89501953125
+Listas de adyacencia,"20155 aristas, 12 B por arista (int32 + 2 float32), mas 8809 desplazamientos de 4 B",0.26425933837890625
+Listas de adyacencia,"20155 aristas, 24 B por arista (int64 + 2 float64), mas 8809 desplazamientos de 4 B",0.4949150085449219

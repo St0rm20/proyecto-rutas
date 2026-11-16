@@ -1,0 +1,9 @@
+{
+  "procesador": "AMD Ryzen 5 5500U with Radeon Graphics",
+  "ram_gb": 17.4,
+  "sistema_operativo": "Linux-6.19.14-108.fc42.x86_64-x86_64-with-glibc2.41",
+  "python": "3.13.13",
+  "compilador_cpp": "g++ (GCC) 15.2.1 20260123 (Red Hat 15.2.1-7)",
+  "banderas": "-O2 -std=c++17",
+  "semilla": 42
+}

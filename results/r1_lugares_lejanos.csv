@@ -1,0 +1,6 @@
+id,nombre,municipio,categoria,lat,lon,duracion_visita_min,fuente_duracion,nodo,dist_nodo_m,lejano
+T03,Valle de Cocora,Salento,Atractivo turistico,4.6375335,-75.4874378,240,Criterio del grupo (caminata corta y mirador),936,934.8,True
+T08,Reserva Natural Barbas-Bremen,Filandia,Atractivo turistico,4.7151134,-75.6719959,180,Criterio del grupo (sendero),4699,2040.7,True
+F01,Hacienda Combia,Calarca,Finca cafetera u hotel rural,4.4917749,-75.6859713,0,No aplica,6709,703.2,True
+F03,Recuca,Calarca,Finca cafetera u hotel rural,4.4331776,-75.7322761,0,No aplica,6622,595.0,True
+F05,Finca La Alsacia,Montenegro,Finca cafetera u hotel rural,4.5782009,-75.7685413,0,No aplica,7493,564.3,True

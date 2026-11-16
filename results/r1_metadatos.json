@@ -1,0 +1,40 @@
+{
+  "fecha_descarga": "2026-11-15",
+  "origen": "OSMnx graph_from_place('Quindío, Colombia', network_type='drive')",
+  "osmnx": "2.1.2",
+  "velocidades": {
+    "aristas": 20155,
+    "con_maxspeed_en_osm": 1307,
+    "sin_maxspeed_imputadas_por_tipo": 18848
+  },
+  "velocidades_por_tipo_kmh": {
+    "motorway": 80,
+    "motorway_link": 50,
+    "trunk": 70,
+    "trunk_link": 45,
+    "primary": 60,
+    "primary_link": 40,
+    "secondary": 50,
+    "secondary_link": 35,
+    "tertiary": 40,
+    "tertiary_link": 30,
+    "unclassified": 30,
+    "residential": 30,
+    "living_street": 15,
+    "service": 20,
+    "track": 15,
+    "road": 30
+  },
+  "velocidad_respaldo_kmh": 30,
+  "nodos_descargada": 8808,
+  "aristas_descargada": 20155,
+  "nodos_componente": 8792,
+  "aristas_componente": 20134,
+  "lugares_lejanos": [
+    "T03",
+    "T08",
+    "F01",
+    "F03",
+    "F05"
+  ]
+}
