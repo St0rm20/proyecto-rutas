@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Rutas del Paisaje Cultural Cafetero</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; display: flex; height: 100vh; }
+  #panel { width: 380px; overflow-y: auto; padding: 12px; box-sizing: border-box; border-right: 1px solid #ccc; }
+  #map { flex: 1; }
+  .tabs button { padding: 6px 10px; margin-right: 2px; cursor: pointer; }
+  .tabs button.on { background: #2b6cb0; color: #fff; }
+  section { display: none; margin-top: 10px; } section.on { display: block; }
+  select, button.go { width: 100%; margin: 4px 0; padding: 6px; }
+  .t { border-collapse: collapse; font-size: 12px; margin-bottom: 14px; } .t td, .t th { border-bottom: 1px solid #ddd; padding: 2px 6px; }
+  img { max-width: 100%; margin-bottom: 10px; }
+  .res { background: #f2f6fb; padding: 8px; margin-top: 8px; font-size: 13px; }
+  h4 { margin: 10px 0 4px; }
+</style>
+</head>
+<body>
+<div id="panel">
+  <h3>Rutas del Paisaje Cultural Cafetero</h3>
+  <div class="tabs">
+    <button data-s="ruta" class="on">Ruta</button><button data-s="env">Envolvente</button>
+    <button data-s="itin">Itinerario</button><button data-s="res">Resultados</button>
+  </div>
+
+  <section id="ruta" class="on">
+    <label>Origen</label><select id="origen"></select>
+    <label>Destino</label><select id="destino"></select>
+    <button class="go" onclick="calcularRuta()">Calcular ruta (Dijkstra con cola de prioridad)</button>
+    <div id="ruta-info" class="res" style="display:none"></div>
+  </section>
+
+  <section id="env">
+    <button class="go" onclick="verEnvolvente()">Mostrar envolvente convexa de la red</button>
+    <div id="env-info" class="res" style="display:none"></div>
+  </section>
+
+  <section id="itin">
+    <label>Lugar de partida</label><select id="inicio"></select>
+    <label>Atractivos (6 a 8; Ctrl/Cmd para varios)</label>
+    <select id="atractivos" multiple size="10"></select>
+    <button class="go" onclick="calcularItinerario()">Calcular recorrido (Held-Karp y voraz)</button>
+    <div id="itin-info" class="res" style="display:none"></div>
+  </section>
+
+  <section id="res"></section>
+</div>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map = L.map('map').setView([4.55, -75.69], 10);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap'}).addTo(map);
+const capa = L.layerGroup().addTo(map);
+let lugares = [];
+
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('section').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); document.getElementById(b.dataset.s).classList.add('on');
+  if (b.dataset.s === 'res') cargarResultados();
+});
+
+function opciones(sel, lista) { sel.innerHTML = lista.map(l => `<option value="${l.id}">${l.id} - ${l.nombre}</option>`).join(''); }
+const min = s => (s / 60).toFixed(1) + ' min';
+
+async function iniciar() {
+  lugares = await (await fetch('/api/lugares')).json();
+  opciones(document.getElementById('origen'), lugares);
+  opciones(document.getElementById('destino'), lugares);
+  document.getElementById('destino').selectedIndex = 1;
+  opciones(document.getElementById('inicio'), lugares);
+  opciones(document.getElementById('atractivos'), lugares.filter(l => l.categoria === 'Atractivo turistico'));
+  lugares.forEach(l => L.circleMarker([l.lat, l.lon], {radius: 4, color: '#555'}).bindTooltip(l.nombre).addTo(map));
+}
+
+async function calcularRuta() {
+  const o = document.getElementById('origen').value, d = document.getElementById('destino').value;
+  const r = await (await fetch(`/api/ruta?o=${o}&d=${d}`)).json();
+  capa.clearLayers();
+  L.polyline(r.coords, {color: 'blue', weight: 4}).addTo(capa);
+  map.fitBounds(L.polyline(r.coords).getBounds());
+  const i = document.getElementById('ruta-info'); i.style.display = 'block';
+  i.innerHTML = `<b>${r.origen}</b> &rarr; <b>${r.destino}</b><br>Tiempo de viaje estimado: ${min(r.tiempo_s)}<br>Nodos explorados: ${r.explorados}`;
+}
+
+async function verEnvolvente() {
+  const g = await (await fetch('/api/envolvente')).json();
+  capa.clearLayers();
+  const l = L.geoJSON(g, {style: {color: 'red', weight: 2, fillOpacity: 0.05}}).addTo(capa);
+  map.fitBounds(l.getBounds());
+  const i = document.getElementById('env-info'); i.style.display = 'block';
+  i.textContent = `Envolvente convexa con ${g.properties.vertices} vertices.`;
+}
+
+async function calcularItinerario() {
+  const ids = [...document.getElementById('atractivos').selectedOptions].map(o => o.value);
+  const r = await fetch('/api/itinerario', {method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({inicio: document.getElementById('inicio').value, atractivos: ids})});
+  const d = await r.json();
+  const i = document.getElementById('itin-info'); i.style.display = 'block';
+  if (d.error) { i.textContent = d.error; return; }
+  capa.clearLayers();
+  d.hk.tramos.forEach(t => L.polyline(t, {color: 'blue', weight: 4}).addTo(capa));
+  d.greedy.tramos.forEach(t => L.polyline(t, {color: 'orange', weight: 3, dashArray: '6 6'}).addTo(capa));
+  const fila = (n, x) => `<h4>${n}</h4>${x.orden.map(o => o.nombre).join(' &rarr; ')}<br>Desplazamientos: ${x.desplazamientos_min} min &middot; Visitas: ${x.visitas_min} min &middot; Jornada: ${x.total_h} h`;
+  i.innerHTML = fila('Held-Karp (optimo, azul)', d.hk) + fila('Heuristica voraz (naranja, punteada)', d.greedy) +
+    `<h4>Diferencia</h4>La heuristica tarda ${d.diferencia_min} min mas en desplazamientos.` +
+    (d.cabe_en_11_h ? '' : '<br><b>El recorrido optimo no cabe en 11 h.</b>');
+}
+
+async function cargarResultados() {
+  const s = document.getElementById('res');
+  if (s.dataset.listo) return;
+  const d = await (await fetch('/api/resultados')).json();
+  s.innerHTML = d.tablas.map(t => `<h4>${t.titulo}</h4>${t.html}`).join('') + d.figuras.map(f => `<img src="/figuras/${f}">`).join('');
+  s.dataset.listo = 1;
+}
+iniciar();
+</script>
+</body>
+</html>
