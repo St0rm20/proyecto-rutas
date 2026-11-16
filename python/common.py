@@ -99,5 +99,5 @@ def cargar_lugares():
 
 
 def cargar_matriz():
-    m = pd.read_csv(RES / "matriz_tiempos.csv", index_col=0)
+    m = pd.read_csv(RES / "r2" / "matriz_tiempos.csv", index_col=0)
     return m

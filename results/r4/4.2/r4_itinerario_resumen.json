@@ -1,0 +1,40 @@
+{
+  "lugar_partida": "M01",
+  "atractivos_iniciales": [
+    "T11",
+    "T02",
+    "T01",
+    "T12",
+    "T05",
+    "T04",
+    "T10",
+    "T03"
+  ],
+  "atractivos_finales": [
+    "T11",
+    "T12",
+    "T05",
+    "T04",
+    "T10"
+  ],
+  "atractivos_removidos": [
+    {
+      "id": "T02",
+      "ahorro_min": 338.2
+    },
+    {
+      "id": "T03",
+      "ahorro_min": 324.3
+    },
+    {
+      "id": "T01",
+      "ahorro_min": 300.0
+    }
+  ],
+  "tiempo_total_visitas_min": 415,
+  "tiempo_total_desplazamientos_min": 144.0,
+  "duracion_total_jornada_h": 9.32,
+  "cabe_en_11_h": true,
+  "voraz_desplazamientos_min": 160.7,
+  "diferencia_voraz_vs_optimo_min": 16.7
+}

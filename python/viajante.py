@@ -20,7 +20,7 @@ def escribir_instancias(ruta, instancias):
 
 def resolver(instancias, algoritmos=("hk", "greedy"), matriz=None, limite_s=300):
     """Ejecuta tsp sobre varias instancias. Devuelve un DataFrame con tiempo, costo, estado y orden."""
-    matriz = matriz or (RES / "matriz_tiempos.csv")
+    matriz = matriz or (RES / "r2" / "matriz_tiempos.csv")
     with tempfile.TemporaryDirectory() as d:
         inst, sal = Path(d) / "inst.csv", Path(d) / "out.csv"
         escribir_instancias(inst, instancias)

@@ -1,0 +1,4 @@
+Instancia q12_4 (k=12, salida y regreso en Armenia)
+Optimo (Held-Karp): M01 -> A02 -> T04 -> M05 -> M10 -> T15 -> F07 -> M08 -> T09 -> T05 -> M12 -> M04 -> F08 -> M01  = 12440.3 s
+Voraz (vecino mas cercano): M01 -> T09 -> T05 -> M04 -> A02 -> T04 -> F07 -> M08 -> F08 -> M12 -> M05 -> T15 -> M10 -> M01  = 15575.9 s
+Brecha: 25.20 %
