@@ -1,0 +1,5 @@
+conjunto,n,vertices_envolvente,tiempo_propio_ms,tiempo_scipy_ms,cociente,mismos_vertices
+Nodos de la red,8792,14,9.317,1.047,8.9,True
+"Cuadrado, 1 000 puntos",1000,22,1.385,0.186,7.46,True
+"Cuadrado, 10 000 puntos",10000,23,10.622,1.264,8.4,True
+"Cuadrado, 50 000 puntos",50000,31,23.545,7.065,3.33,True
