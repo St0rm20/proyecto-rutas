@@ -1,0 +1,41 @@
+id,nombre,municipio,categoria,lat,lon,duracion_visita_min,fuente_duracion
+M01,Armenia (Plaza de Bolivar),Armenia,Cabecera municipal,4.5324916,-75.6734757,0,No aplica
+M02,Buenavista (plaza principal),Buenavista,Cabecera municipal,4.3593051,-75.7381169,0,No aplica
+M03,Calarca (plaza mayor),Calarca,Cabecera municipal,4.5305074,-75.640302,0,No aplica
+M04,Circasia (plaza principal),Circasia,Cabecera municipal,4.6205032,-75.6346463,0,No aplica
+M05,Cordoba (plaza principal),Cordoba,Cabecera municipal,4.3899866,-75.6852413,0,No aplica
+M06,Filandia (plaza principal),Filandia,Cabecera municipal,4.6745608,-75.6582983,0,No aplica
+M07,Genova (plaza principal),Genova,Cabecera municipal,4.2067754,-75.7904068,0,No aplica
+M08,La Tebaida (plaza de Bolivar),La Tebaida,Cabecera municipal,4.4538288,-75.7891344,0,No aplica
+M09,Montenegro (plaza principal),Montenegro,Cabecera municipal,4.5670611,-75.7507998,0,No aplica
+M10,Pijao (plaza principal),Pijao,Cabecera municipal,4.3339712,-75.7039678,0,No aplica
+M11,Quimbaya (plaza de Bolivar),Quimbaya,Cabecera municipal,4.6227807,-75.7630453,0,No aplica
+M12,Salento (plaza principal),Salento,Cabecera municipal,4.6369944,-75.5696562,0,No aplica
+T01,Parque del Cafe,Montenegro,Atractivo turistico,4.5414261,-75.7715024,300,Criterio del grupo (visita completa del parque)
+T02,PANACA,Quimbaya,Atractivo turistico,4.609493,-75.8151466,300,Criterio del grupo (visita completa del parque)
+T03,Valle de Cocora,Salento,Atractivo turistico,4.6375335,-75.4874378,240,Criterio del grupo (caminata corta y mirador)
+T04,Jardin Botanico del Quindio,Calarca,Atractivo turistico,4.5106009,-75.652546,150,Criterio del grupo (recorrido guiado)
+T05,Museo del Oro Quimbaya,Armenia,Atractivo turistico,4.5714708,-75.6477751,90,Criterio del grupo (recorrido de museo)
+T06,Mirador Alto de la Cruz,Salento,Atractivo turistico,4.6391256,-75.567429,45,Criterio del grupo (subida y mirador)
+T07,Mirador Colina Iluminada,Filandia,Atractivo turistico,4.6683848,-75.6648287,40,Criterio del grupo (mirador)
+T08,Reserva Natural Barbas-Bremen,Filandia,Atractivo turistico,4.7151134,-75.6719959,180,Criterio del grupo (sendero)
+T09,Parque de la Vida,Armenia,Atractivo turistico,4.5485106,-75.6595104,60,Criterio del grupo (parque urbano)
+T10,Pueblo Tapao,Montenegro,Atractivo turistico,4.511821,-75.7849595,90,Criterio del grupo (recorrido cultural)
+T11,Parque Los Arrieros,Montenegro,Atractivo turistico,4.5803445,-75.7811915,45,Criterio del grupo (parque urbano)
+T12,Mirador Buenavista,Buenavista,Atractivo turistico,4.3569946,-75.7363716,40,Criterio del grupo (mirador)
+T13,Parque Ecologico Penas Blancas,Calarca,Atractivo turistico,4.4863234,-75.6430399,120,Criterio del grupo (sendero)
+T14,Cascada de Santa Rita,Salento,Atractivo turistico,4.6518958,-75.5753549,90,Criterio del grupo (caminata corta)
+T15,Mirado de Pijao,Pijao,Atractivo turistico,4.3630743,-75.7131183,120,Criterio del grupo (mirador)
+F01,Hacienda Combia,Calarca,Finca cafetera u hotel rural,4.4917749,-75.6859713,0,No aplica
+F02,Finca El Ocaso,Salento,Finca cafetera u hotel rural,4.6236949,-75.5952606,0,No aplica
+F03,Recuca,Calarca,Finca cafetera u hotel rural,4.4331776,-75.7322761,0,No aplica
+F04,Finca Hotel La Rivera,Calarca,Finca cafetera u hotel rural,4.5011016,-75.6678792,0,No aplica
+F05,Finca La Alsacia,Montenegro,Finca cafetera u hotel rural,4.5782009,-75.7685413,0,No aplica
+F06,Finca La Cabana,Calarca,Finca cafetera u hotel rural,4.5295434,-75.6271025,0,No aplica
+F07,Finca La Esmeralda,Calarca,Finca cafetera u hotel rural,4.4775872,-75.7010844,0,No aplica
+F08,Finca Buenos Aires,Circasia,Finca cafetera u hotel rural,4.5684816,-75.6946233,0,No aplica
+A01,Cooperativa de Caficultores del Quindio,Armenia,Centro de acopio o trilladora,4.5185508,-75.6899536,0,No aplica
+A02,Cooperativa de Caficultores de Calarca,Calarca,Centro de acopio o trilladora,4.5289544,-75.6437337,0,No aplica
+A03,Cooperativa de Caficultores de Montenegro,Montenegro,Centro de acopio o trilladora,4.5660162,-75.7555874,0,No aplica
+A04,Cooperativa de Caficultores de Quimbaya,Quimbaya,Centro de acopio o trilladora,4.6205888,-75.7667572,0,No aplica
+A05,Cooperativa de Caficultores de Genova,Genova,Centro de acopio o trilladora,4.2047134,-75.7927382,0,No aplica
