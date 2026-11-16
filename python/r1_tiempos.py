@@ -11,13 +11,13 @@ import statistics
 import time
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import osmnx as ox
 import pandas as pd
-
 from common import FIG, RAW, RES, crear_carpetas, guardar_maquina
 
 PLAZA_BOLIVAR = (4.5339, -75.6811)

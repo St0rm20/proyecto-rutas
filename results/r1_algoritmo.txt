@@ -1,0 +1,99 @@
+osmnx 2.1.2 / networkx 3.7
+=== osmnx.truncate.largest_component ===
+def largest_component(G: nx.MultiDiGraph, *, strongly: bool = False) -> nx.MultiDiGraph:
+    """
+    Return `G`'s largest weakly or strongly connected component as a graph.
+
+    Parameters
+    ----------
+    G
+        Input graph.
+    strongly
+        If True, return the largest strongly connected component. Otherwise
+        return the largest weakly connected component.
+
+    Returns
+    -------
+    G
+        The largest connected component subgraph of the original graph.
+    """
+    if strongly:
+        kind = "strongly"
+        is_connected = nx.is_strongly_connected
+        connected_components = nx.strongly_connected_components
+    else:
+        kind = "weakly"
+        is_connected = nx.is_weakly_connected
+        connected_components = nx.weakly_connected_components
+
+    if not is_connected(G):
+        # get all the connected components in graph then identify the largest
+        largest_cc = max(connected_components(G), key=len)
+        n = len(G)
+
+        # induce (frozen) subgraph then unfreeze it by making new MultiDiGraph
+        G = nx.MultiDiGraph(G.subgraph(largest_cc))
+
+        msg = f"Got largest {kind} connected component ({len(G):,} of {n:,} total nodes)"
+        utils.log(msg, level=lg.INFO)
+
+    return G
+
+=== networkx.strongly_connected_components (docstring) ===
+Generate nodes in strongly connected components of graph.
+
+Parameters
+----------
+G : NetworkX Graph
+    A directed graph.
+
+Returns
+-------
+comp : generator of sets
+    A generator of sets of nodes, one for each strongly connected
+    component of G.
+
+Raises
+------
+NetworkXNotImplemented
+    If G is undirected.
+
+Examples
+--------
+Generate a sorted list of strongly connected components, largest first.
+
+>>> G = nx.cycle_graph(4, create_using=nx.DiGraph())
+>>> nx.add_cycle(G, [10, 11, 12])
+>>> [
+...     len(c)
+...     for c in sorted(nx.strongly_connected_components(G), key=len, reverse=True)
+... ]
+[4, 3]
+
+If you only want the largest component, it's more efficient to
+use max instead of sort.
+
+>>> largest = max(nx.strongly_connected_components(G), key=len)
+
+See Also
+--------
+connected_components
+weakly_connected_components
+kosaraju_strongly_connected_components
+
+Notes
+-----
+Iterative version of Tarjan's algorithm using the improvements
+described by Tarjan and Zwick in their survey [1]_, plus a trick
+borrowed from the Rust implementation of the WebGraph framework [2]_.
+
+References
+----------
+.. [1] Robert E. Tarjan and Uri Zwick, "Finding strong components using
+   depth-first search", European Journal of Combinatorics, 119, 2024.
+   https://doi.org/10.1016/j.ejc.2023.103815
+
+.. [2] Tommaso Fontana, Sebastiano Vigna, and Stefano Zacchiroli,
+   "WebGraph: The next generation (is in Rust)", Companion Proceedings
+   of the ACM Web Conference 2024, pp. 686-689, 2024.
+   https://doi.org/10.1145/3589335.3651581
