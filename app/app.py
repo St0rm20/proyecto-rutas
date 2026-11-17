@@ -31,14 +31,14 @@ NODO_DE = dict(zip(LUGARES["id"], LUGARES["nodo"]))
 NOMBRE = dict(zip(LUGARES["id"], LUGARES["nombre"]))
 VISITA = dict(zip(LUGARES["id"], LUGARES["duracion_visita_min"]))
 
-TABLAS = [("r1_tamano.csv", "R1. Tamano de la red antes y despues de la componente"),
-          ("r1_memoria.csv", "R1. Memoria estimada de las representaciones"),
-          ("r1_tiempos.csv", "R1. Tiempo de obtener la componente"),
-          ("r2_cociente.csv", "R2. Cociente lineal / cola de prioridad"),
-          ("r3_tiempos.csv", "R3. Envolvente convexa: propia frente a SciPy"),
-          ("r4_exactas.csv", "R4. Soluciones exactas"),
-          ("r4_calidad.csv", "R4. Calidad de la heuristica"),
-          ("r4_itinerario.csv", "R4. Itinerario de un dia")]
+TABLAS = [("r1/r1_tamano.csv",        "R1. Tamano de la red antes y despues de la componente"),
+          ("r1/r1_memoria.csv",        "R1. Memoria estimada de las representaciones"),
+          ("r1/1.2/r1_tiempos.csv",    "R1. Tiempo de obtener la componente"),
+          ("r2/r2_cociente.csv",       "R2. Cociente lineal / cola de prioridad"),
+          ("r3/r3_tiempos.csv",        "R3. Envolvente convexa: propia frente a SciPy"),
+          ("r4/4.1/r4_exactas.csv",    "R4. Soluciones exactas"),
+          ("r4/4.1/r4_calidad.csv",    "R4. Calidad de la heuristica"),
+          ("r4/4.2/r4_itinerario.csv", "R4. Itinerario de un dia")]
 
 
 def rutas_nodos(pares):
@@ -77,7 +77,7 @@ def api_ruta():
 
 @app.route("/api/envolvente")
 def api_envolvente():
-    return send_from_directory(RES, "envolvente.geojson")
+    return send_from_directory(RES / "r3", "envolvente.geojson")
 
 
 @app.route("/api/itinerario", methods=["POST"])
