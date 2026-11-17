@@ -1,4 +1,4 @@
-"""Utilidades compartidas: rutas del repositorio, proyeccion UTM y ejecucion de los programas en C++."""
+"""Utilidades compartidas: rutas del repositorio, proyeccion UTM y ejecucion de los programas en Java."""
 import json
 import os
 import platform
@@ -15,6 +15,12 @@ RAW = DATOS / "raw"
 PROC = DATOS / "processed"
 RES = RAIZ / "results"
 FIG = RES / "figuras"
+RES_R1 = RES / "r1"
+RES_R1_2 = RES_R1 / "1.2"
+RES_R2 = RES / "r2"
+RES_R3 = RES / "r3"
+RES_R4_1 = RES / "r4" / "4.1"
+RES_R4_2 = RES / "r4" / "4.2"
 BUILD = RAIZ / "build"
 
 SEMILLA = 42  # semilla fija de todos los experimentos aleatorios
@@ -35,19 +41,19 @@ def a_geo(x, y):
 
 
 def crear_carpetas():
-    for p in (RAW, PROC, RES, FIG):
+    for p in (RAW, PROC, RES, FIG, RES_R1, RES_R1_2, RES_R2, RES_R3, RES_R4_1, RES_R4_2):
         p.mkdir(parents=True, exist_ok=True)
 
 
 def exe(nombre):
     ruta = BUILD / nombre
     if not ruta.exists():
-        raise SystemExit(f"Falta {ruta}. Compile primero: cmake -S . -B build && cmake --build build")
+        raise SystemExit(f"Falta {ruta}. Compile primero: bash scripts/compilar.sh")
     return str(ruta)
 
 
 def correr(args, **kw):
-    """Ejecuta un programa en C++ y devuelve (stdout, stderr). Falla si el codigo de salida no es 0."""
+    """Ejecuta un programa en Java y devuelve (stdout, stderr). Falla si el codigo de salida no es 0."""
     r = subprocess.run([str(a) for a in args], capture_output=True, text=True, **kw)
     if r.returncode != 0:
         raise RuntimeError(f"Fallo {' '.join(map(str, args))}\n{r.stderr}")
@@ -70,16 +76,17 @@ def info_maquina():
     except ImportError:
         ram = None
     try:
-        gpp = subprocess.run(["g++", "--version"], capture_output=True, text=True).stdout.splitlines()[0]
+        lineas = subprocess.run(["java", "-version"], capture_output=True, text=True).stderr.splitlines()
+        java = [l for l in lineas if not l.startswith("Picked up")][0]
     except Exception:
-        gpp = "desconocido"
+        java = "desconocido"
     return {
         "procesador": cpu,
         "ram_gb": ram,
         "sistema_operativo": platform.platform(),
         "python": platform.python_version(),
-        "compilador_cpp": gpp,
-        "banderas": "-O2 -std=c++17",
+        "java": java,
+        "banderas_jvm": "-Xss64m -Xmx6g -XX:+UseSerialGC",
         "semilla": SEMILLA,
     }
 
@@ -99,5 +106,5 @@ def cargar_lugares():
 
 
 def cargar_matriz():
-    m = pd.read_csv(RES / "r2" / "matriz_tiempos.csv", index_col=0)
+    m = pd.read_csv(RES_R2 / "matriz_tiempos.csv", index_col=0)
     return m

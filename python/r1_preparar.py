@@ -22,7 +22,7 @@ import osmnx as ox # Calcular las velocidades, claramente tambien descargar los 
 import pandas as pd #Kung fu
 from scipy.spatial import cKDTree # Arból KD 
 
-from common import DATOS, PROC, RAW, RES, a_utm, crear_carpetas, guardar_maquina
+from common import DATOS, PROC, RAW, RES_R1, a_utm, crear_carpetas, guardar_maquina
 
 routing = ox.routing if hasattr(ox, "routing") else ox
 
@@ -162,7 +162,7 @@ def exportar(Gc, lugares):
     lugares["lejano"] = lugares["dist_nodo_m"] > 500
     lugares.to_csv(PROC / "lugares_nodos.csv", index=False)
     lugares[["id", "nodo"]].to_csv(PROC / "lugares_idx.csv", index=False)
-    lugares[lugares["lejano"]].to_csv(RES / "r1_lugares_lejanos.csv", index=False)
+    lugares[lugares["lejano"]].to_csv(RES_R1 / "r1_lugares_lejanos.csv", index=False)
     return nodos, aristas, lugares
 
 
@@ -186,7 +186,7 @@ def main():
 
     # 1) memoria (con los V y E reales de la red descargada)
     mem = estimar_memoria(V0, E0)
-    mem.to_csv(RES / "r1_memoria.csv", index=False)
+    mem.to_csv(RES_R1 / "r1_memoria.csv", index=False)
     print(mem.to_string(index=False))
 
     # 2) pesos
@@ -202,7 +202,7 @@ def main():
     pd.DataFrame([
         {"red": "Red descargada", "nodos": V0, "aristas": E0},
         {"red": "Componente fuertemente conexa", "nodos": V1, "aristas": E1},
-    ]).to_csv(RES / "r1_tamano.csv", index=False)
+    ]).to_csv(RES_R1 / "r1_tamano.csv", index=False)
     print(f"Componente: V={V1:,}  E={E1:,}  (se conserva {V1 / V0:.1%} de los nodos)")
 
     # 4) lugares y exportacion
@@ -220,8 +220,8 @@ def main():
         "nodos_descargada": V0, "aristas_descargada": E0, "nodos_componente": V1, "aristas_componente": E1,
         "lugares_lejanos": lejanos["id"].tolist(),
     }
-    (RES / "r1_metadatos.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
-    print("Listo. Archivos en data/processed/ y results/")
+    (RES_R1 / "r1_metadatos.json").write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
+    print("Listo. Archivos en data/processed/ y results/r1/")
 
 
 if __name__ == "__main__":

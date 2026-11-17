@@ -2,7 +2,7 @@
 
 Conjuntos de puntos: nodos de la componente (UTM 18N redondeados a entero y sin repetidos) y puntos al
 azar dentro de un cuadrado (1 000, 10 000 y 50 000, semilla fija).
-Salidas: results/r3_tiempos.csv, results/envolvente.geojson, results/figuras/r3_envolvente.png
+Salidas: results/r3/r3_tiempos.csv, results/r3/envolvente.geojson, results/figuras/r3_envolvente.png
 
 Uso: python python/r3_experimentos.py
 """
@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import ConvexHull
 
-from common import FIG, PROC, RES, SEMILLA, a_geo, cargar_nodos, correr, crear_carpetas, exe, guardar_maquina
+from common import FIG, PROC, RES_R3, SEMILLA, a_geo, cargar_nodos, correr, crear_carpetas, exe, guardar_maquina
 
 LADO = 100_000  # lado del cuadrado de los puntos aleatorios (m)
 
@@ -61,8 +61,8 @@ def tiempo_scipy(p, reps=5):
 
 
 def hull_propio(p, nombre):
-    archivo = RES / f"_puntos_{nombre}.csv"
-    salida = RES / f"_hull_{nombre}.csv"
+    archivo = RES_R3 / f"_puntos_{nombre}.csv"
+    salida = RES_R3 / f"_hull_{nombre}.csv"
     pd.DataFrame(p, columns=["x", "y"]).to_csv(archivo, index=False)
     out, _ = correr([exe("hull"), archivo, salida, 5])
     n, h, ms = out.strip().split(",")
@@ -100,14 +100,14 @@ def main():
         print(filas[-1])
         if hull_red is None:
             hull_red = v_propio
-    pd.DataFrame(filas).to_csv(RES / "r3_tiempos.csv", index=False)
+    pd.DataFrame(filas).to_csv(RES_R3 / "r3_tiempos.csv", index=False)
 
     # envolvente de la red: GeoJSON para la aplicacion y figura para el informe
     xs = np.array([v[0] for v in hull_red]); ys = np.array([v[1] for v in hull_red])
     lat, lon = a_geo(xs, ys)
     anillo = [[float(a), float(b)] for a, b in zip(lon, lat)] + [[float(lon[0]), float(lat[0])]]
     geo = {"type": "Feature", "properties": {"vertices": len(hull_red)}, "geometry": {"type": "Polygon", "coordinates": [anillo]}}
-    (RES / "envolvente.geojson").write_text(json.dumps(geo), encoding="utf-8")
+    (RES_R3 / "envolvente.geojson").write_text(json.dumps(geo), encoding="utf-8")
 
     fig, ax = plt.subplots(figsize=(5.5, 6))
     ax.scatter(nodos["lon"], nodos["lat"], s=0.3, c="gray", alpha=.5, label="nodos")
@@ -115,7 +115,7 @@ def main():
     ax.set_xlabel("Longitud"); ax.set_ylabel("Latitud"); ax.legend(markerscale=10)
     ax.set_title("Envolvente convexa de la red vial"); ax.set_aspect("equal")
     fig.tight_layout(); fig.savefig(FIG / "r3_envolvente.png", dpi=160)
-    print("Guardado results/r3_tiempos.csv, results/envolvente.geojson y la figura")
+    print("Guardado results/r3/r3_tiempos.csv, results/r3/envolvente.geojson y la figura")
 
 
 if __name__ == "__main__":

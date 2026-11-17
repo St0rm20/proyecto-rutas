@@ -18,7 +18,7 @@ import networkx as nx
 import numpy as np
 import osmnx as ox
 import pandas as pd
-from common import FIG, RAW, RES, crear_carpetas, guardar_maquina
+from common import FIG, RAW, RES_R1_2, crear_carpetas, guardar_maquina
 
 PLAZA_BOLIVAR = (4.5339, -75.6811)
 RADIOS_KM = [2, 5, 10, 20]
@@ -51,7 +51,7 @@ def documentar_algoritmo():
     texto = [f"osmnx {ox.__version__} / networkx {nx.__version__}\n", "=== osmnx.truncate.largest_component ===\n",
              inspect.getsource(ox.truncate.largest_component), "\n=== networkx.strongly_connected_components (docstring) ===\n",
              nx.strongly_connected_components.__doc__ or ""]
-    (RES / "r1_algoritmo.txt").write_text("".join(texto), encoding="utf-8")
+    (RES_R1_2 / "r1_algoritmo.txt").write_text("".join(texto), encoding="utf-8")
 
 
 def main():
@@ -74,7 +74,7 @@ def main():
                       "us_por_elemento": round(ms * 1000 / (V + E), 4)})
         print(filas[-1])
     df = pd.DataFrame(filas)
-    df.to_csv(RES / "r1_tiempos.csv", index=False)
+    df.to_csv(RES_R1_2 / "r1_tiempos.csv", index=False)
 
     # grafica: tiempo frente a V+E, con una recta de referencia O(V+E) ajustada al ultimo punto
     fig, ax = plt.subplots(figsize=(6, 4))
@@ -85,7 +85,7 @@ def main():
     ax.set_title("largest_component (fuertemente conexa)")
     ax.legend(); ax.grid(alpha=.3)
     fig.tight_layout(); fig.savefig(FIG / "r1_tiempos.png", dpi=160)
-    print("Guardado results/r1_tiempos.csv y results/figuras/r1_tiempos.png")
+    print("Guardado results/r1/1.2/r1_tiempos.csv y results/figuras/r1_tiempos.png")
 
 
 if __name__ == "__main__":

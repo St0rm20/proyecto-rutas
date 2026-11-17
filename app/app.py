@@ -3,7 +3,7 @@
 Las rutas y el itinerario se calculan en el momento llamando a los programas en Java:
   - Dijkstra con cola de prioridad  (build/dijkstra routes)
   - Held-Karp y vecino mas cercano  (build/tsp)
-La envolvente convexa ya esta calculada (results/envolvente.geojson).
+La envolvente convexa ya esta calculada (results/r3/envolvente.geojson).
 
 Uso (desde la raiz del repositorio):  python app/app.py      y abrir http://127.0.0.1:5000
 """
@@ -17,7 +17,7 @@ import pandas as pd
 from flask import Flask, jsonify, render_template, request, send_from_directory
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "python"))
-from common import FIG, PROC, RES, cargar_lugares, cargar_matriz, cargar_nodos, correr, exe  # noqa: E402
+from common import FIG, PROC, RES, RES_R1, RES_R1_2, RES_R2, RES_R3, RES_R4_1, RES_R4_2, cargar_lugares, cargar_matriz, cargar_nodos, correr, exe  # noqa: E402
 from viajante import resolver  # noqa: E402
 
 app = Flask(__name__)
@@ -31,14 +31,14 @@ NODO_DE = dict(zip(LUGARES["id"], LUGARES["nodo"]))
 NOMBRE = dict(zip(LUGARES["id"], LUGARES["nombre"]))
 VISITA = dict(zip(LUGARES["id"], LUGARES["duracion_visita_min"]))
 
-TABLAS = [("r1/r1_tamano.csv",        "R1. Tamano de la red antes y despues de la componente"),
-          ("r1/r1_memoria.csv",        "R1. Memoria estimada de las representaciones"),
-          ("r1/1.2/r1_tiempos.csv",    "R1. Tiempo de obtener la componente"),
-          ("r2/r2_cociente.csv",       "R2. Cociente lineal / cola de prioridad"),
-          ("r3/r3_tiempos.csv",        "R3. Envolvente convexa: propia frente a SciPy"),
-          ("r4/4.1/r4_exactas.csv",    "R4. Soluciones exactas"),
-          ("r4/4.1/r4_calidad.csv",    "R4. Calidad de la heuristica"),
-          ("r4/4.2/r4_itinerario.csv", "R4. Itinerario de un dia")]
+TABLAS = [(RES_R1 / "r1_tamano.csv", "R1. Tamano de la red antes y despues de la componente"),
+          (RES_R1 / "r1_memoria.csv", "R1. Memoria estimada de las representaciones"),
+          (RES_R1_2 / "r1_tiempos.csv", "R1. Tiempo de obtener la componente"),
+          (RES_R2 / "r2_cociente.csv", "R2. Cociente lineal / cola de prioridad"),
+          (RES_R3 / "r3_tiempos.csv", "R3. Envolvente convexa: propia frente a SciPy"),
+          (RES_R4_1 / "r4_exactas.csv", "R4. Soluciones exactas"),
+          (RES_R4_1 / "r4_calidad.csv", "R4. Calidad de la heuristica"),
+          (RES_R4_2 / "r4_itinerario.csv", "R4. Itinerario de un dia")]
 
 
 def rutas_nodos(pares):
@@ -77,7 +77,7 @@ def api_ruta():
 
 @app.route("/api/envolvente")
 def api_envolvente():
-    return send_from_directory(RES / "r3", "envolvente.geojson")
+    return send_from_directory(RES_R3, "envolvente.geojson")
 
 
 @app.route("/api/itinerario", methods=["POST"])
@@ -108,8 +108,7 @@ def api_itinerario():
 @app.route("/api/resultados")
 def api_resultados():
     tablas = []
-    for nombre, titulo in TABLAS:
-        ruta = RES / nombre
+    for ruta, titulo in TABLAS:
         if ruta.exists():
             df = pd.read_csv(ruta)
             tablas.append({"titulo": titulo, "html": df.to_html(index=False, border=0, classes="t")})

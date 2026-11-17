@@ -5,7 +5,7 @@ y se regresa. Si visitas + desplazamientos superan 11 h se quita, uno por uno, e
 consume (duracion de su visita + desvio extra que causa en el recorrido) y se recalcula con Held-Karp hasta
 que quepa. Asi se conserva la mayor cantidad posible de atractivos.
 
-Salidas: results/r4_itinerario.csv y results/r4_itinerario_resumen.json
+Salidas: results/r4/4.2/r4_itinerario.csv y results/r4/4.2/r4_itinerario_resumen.json
 
 Uso: python python/r4_itinerario.py [--inicio M01] [--atractivos T01,T03,...]
 """
@@ -15,7 +15,7 @@ import random
 
 import pandas as pd
 
-from common import RES, SEMILLA, cargar_lugares, cargar_matriz, crear_carpetas
+from common import RES_R4_2, SEMILLA, cargar_lugares, cargar_matriz, crear_carpetas
 from viajante import resolver
 
 JORNADA_MIN = 11 * 60
@@ -80,7 +80,7 @@ def main():
         lug.remove(quitar)
 
     tabla = tabla_itinerario(hk.orden, m, lugares)
-    tabla.to_csv(RES / "r4_itinerario.csv", index=False)
+    tabla.to_csv(RES_R4_2 / "r4_itinerario.csv", index=False)
     print(tabla.to_string(index=False))
     resumen = {
         "lugar_partida": a.inicio, "atractivos_iniciales": iniciales, "atractivos_finales": [ids[i] for i in lug],
@@ -90,7 +90,7 @@ def main():
         "voraz_desplazamientos_min": round(gr.costo_s / 60, 1),
         "diferencia_voraz_vs_optimo_min": round((gr.costo_s - hk.costo_s) / 60, 1),
     }
-    (RES / "r4_itinerario_resumen.json").write_text(json.dumps(resumen, indent=2, ensure_ascii=False), encoding="utf-8")
+    (RES_R4_2 / "r4_itinerario_resumen.json").write_text(json.dumps(resumen, indent=2, ensure_ascii=False), encoding="utf-8")
     print(json.dumps(resumen, indent=2, ensure_ascii=False))
 
 

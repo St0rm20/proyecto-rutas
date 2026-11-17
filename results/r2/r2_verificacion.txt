@@ -1,12 +1,12 @@
 Diferencia maxima entre version lineal y cola de prioridad (10 pares): 0.000000 s
-T04->F01: propio=621.021  networkx=621.021
-T05->T09: propio=251.994  networkx=251.994
-F04->T05: propio=941.600  networkx=941.600
-A01->A04: propio=1512.805  networkx=1512.805
-F01->T08: propio=3229.117  networkx=3229.118
-A01->M01: propio=213.052  networkx=213.052
-T11->A04: propio=513.009  networkx=513.009
-M01->T02: propio=2424.944  networkx=2424.944
-M08->M11: propio=2031.975  networkx=2031.975
-A03->T01: propio=263.634  networkx=263.634
-Diferencia maxima contra NetworkX en 10 pares: 0.000047 s
+M01->T05: propio=539.346  networkx=539.346
+T10->A01: propio=943.160  networkx=943.160
+T14->T07: propio=1549.177  networkx=1549.177
+F03->T03: propio=4143.184  networkx=4143.184
+A01->T11: propio=1317.051  networkx=1317.051
+M04->T11: propio=1638.757  networkx=1638.757
+T14->M04: propio=1049.852  networkx=1049.852
+M08->T05: propio=1644.713  networkx=1644.713
+M11->A04: propio=78.684  networkx=78.684
+T13->A02: propio=606.610  networkx=606.610
+Diferencia maxima contra NetworkX en 10 pares: 0.000049 s

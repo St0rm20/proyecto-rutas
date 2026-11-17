@@ -1,0 +1,12 @@
+# Dependencias de Python del proyecto (probadas con Python 3.13)
+osmnx==2.1.2
+networkx>=3.4
+geopandas>=1.0
+shapely>=2.0
+pyproj>=3.6
+numpy>=2.0
+pandas>=2.2
+scipy>=1.13
+matplotlib>=3.9
+flask>=3.0
+psutil>=5.9

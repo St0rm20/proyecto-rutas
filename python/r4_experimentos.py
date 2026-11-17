@@ -1,11 +1,11 @@
 """Requerimiento 4 - Ruta optima de recorrido: fuerza bruta, Held-Karp y heuristica del vecino mas cercano.
 
 Salidas:
-  results/r4_exactas.csv        k, tiempo fuerza bruta (ms), tiempo Held-Karp (ms), memoria HK (MiB)
-  results/r4_hk_extra.csv       Held-Karp para k mayores (solo informativo)
-  results/r4_calidad.csv        k, instancias, brecha promedio y maxima (%)
-  results/r4_calidad_detalle.csv
-  results/r4_ejemplo_voraz.txt  instancia con la mayor brecha (para el punto 5)
+  results/r4/4.1/r4_exactas.csv        k, tiempo fuerza bruta (ms), tiempo Held-Karp (ms), memoria HK (MiB)
+  results/r4/4.1/r4_hk_extra.csv       Held-Karp para k mayores (solo informativo)
+  results/r4/4.1/r4_calidad.csv        k, instancias, brecha promedio y maxima (%)
+  results/r4/4.1/r4_calidad_detalle.csv
+  results/r4/4.1/r4_ejemplo_voraz.txt  instancia con la mayor brecha (para el punto 5)
   results/figuras/r4_tiempo_vs_k.png
 
 Uso: python python/r4_experimentos.py [--limite 300] [--hk-hasta 18]
@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from common import FIG, RES, SEMILLA, cargar_matriz, crear_carpetas, guardar_maquina
+from common import FIG, RES_R4_1, SEMILLA, cargar_matriz, crear_carpetas, guardar_maquina
 from viajante import costo_orden, resolver
 
 
@@ -59,7 +59,7 @@ def main():
                       "costo_optimo_s": h.costo_s if h.estado == "ok" else None,
                       "memoria_hk_mib": round(memoria_hk_mib(k), 3)})
     ex = pd.DataFrame(filas)
-    ex.to_csv(RES / "r4_exactas.csv", index=False)
+    ex.to_csv(RES_R4_1 / "r4_exactas.csv", index=False)
     print(ex.to_string(index=False))
     for nombre, col in (("fuerza bruta", "tiempo_fuerza_bruta_ms"), ("Held-Karp", "tiempo_held_karp_ms")):
         resueltos = [r["k"] for _, r in ex.iterrows() if r[col] != "no completada"]
@@ -78,7 +78,7 @@ def main():
         inst2 = [(f"k{k}", inicio, rng.sample(otros, min(k, len(otros)))) for k in range(13, min(a.hk_hasta, len(otros)) + 1)]
         d2 = resolver(inst2, ("hk",), limite_s=a.limite)
         d2["memoria_hk_mib"] = d2["k"].apply(lambda k: round(memoria_hk_mib(k), 1))
-        d2[["k", "tiempo_ms", "costo_s", "estado", "memoria_hk_mib"]].to_csv(RES / "r4_hk_extra.csv", index=False)
+        d2[["k", "tiempo_ms", "costo_s", "estado", "memoria_hk_mib"]].to_csv(RES_R4_1 / "r4_hk_extra.csv", index=False)
         print(d2[["k", "tiempo_ms", "estado", "memoria_hk_mib"]].to_string(index=False))
 
     # ---------- 3) calidad de la heuristica ----------
@@ -96,9 +96,9 @@ def main():
                         "brecha_pct": round(brecha, 3), "orden_optimo": " ".join(map(str, hk.orden)),
                         "orden_voraz": " ".join(map(str, gr.orden))})
     det = pd.DataFrame(detalle)
-    det.to_csv(RES / "r4_calidad_detalle.csv", index=False)
+    det.to_csv(RES_R4_1 / "r4_calidad_detalle.csv", index=False)
     cal = det.groupby("k")["brecha_pct"].agg(instancias="count", brecha_promedio_pct="mean", brecha_maxima_pct="max").round(2).reset_index()
-    cal.to_csv(RES / "r4_calidad.csv", index=False)
+    cal.to_csv(RES_R4_1 / "r4_calidad.csv", index=False)
     print(cal.to_string(index=False))
 
     # ---------- 5) ejemplo donde la heuristica no es optima ----------
@@ -108,7 +108,7 @@ def main():
              f"Optimo (Held-Karp): {nom(peor.orden_optimo)}  = {peor.optimo_s:.1f} s\n"
              f"Voraz (vecino mas cercano): {nom(peor.orden_voraz)}  = {peor.voraz_s:.1f} s\n"
              f"Brecha: {peor.brecha_pct:.2f} %\n")
-    (RES / "r4_ejemplo_voraz.txt").write_text(texto, encoding="utf-8")
+    (RES_R4_1 / "r4_ejemplo_voraz.txt").write_text(texto, encoding="utf-8")
     print(texto)
 
 
